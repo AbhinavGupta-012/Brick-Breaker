@@ -64,15 +64,21 @@ public class GamePanel extends JPanel{
             engine.getPaddleHeight()
         );
 
-        int totalWidth = cols * brickWidth + (cols - 1) * brickGap;
-        int startX = (getWidth() - totalWidth) / 2;
+        boolean[][] bricks = engine.getBricks();
 
-        for (int row = 0; row < rows; row++){
-            for (int col = 0; col < cols; col++){
-                int x = startX + col * (brickWidth + brickGap);
-                int y = 50 + row * (brickHeight + brickGap);
+        for (int row = 0; row < engine.getRows(); row++){
+            for (int col = 0; col < engine.getCols(); col++){
+                if (!bricks[row][col]){
+                    continue;
+                }
 
-                g.fillRect(x, y, brickWidth, brickHeight);
+                int totalWidth = engine.getCols() * engine.getBrickWidth() + (engine.getCols() - 1) * engine.getBrickGap();
+                int startX = (getWidth() - totalWidth) / 2;
+
+                int x = startX + col * (engine.getBrickWidth() + engine.getBrickGap());
+                int y = 50 + row * (engine.getBrickHeight() + engine.getBrickGap());
+
+                g.fillRect(x, y, engine.getBrickWidth(), engine.getBrickHeight());
             }
         }
     }
