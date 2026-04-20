@@ -11,12 +11,6 @@ public class GamePanel extends JPanel{
     boolean leftPressed = false;
     boolean rightPressed = false;
 
-    int rows = 3;
-    int cols = 7;
-    int brickWidth = 80;
-    int brickHeight = 25;
-    int brickGap = 10;
-
     public GamePanel(){
         engine = new GameEngine();
 
@@ -36,15 +30,16 @@ public class GamePanel extends JPanel{
         });
 
         Timer timer = new Timer(16, e ->{
-            if (leftPressed){
-                engine.movePaddleLeft();
-            }
-            if (rightPressed){
-                engine.movePaddleRight();
-            }
+            if (!engine.isGameOver()){
+                if (leftPressed){
+                    engine.movePaddleLeft();
+                }
+                if (rightPressed){
+                    engine.movePaddleRight();
+                }
 
-            engine.updateGame();
-
+                engine.updateGame();
+            }
             repaint();
         });
 
@@ -80,6 +75,13 @@ public class GamePanel extends JPanel{
 
                 g.fillRect(x, y, engine.getBrickWidth(), engine.getBrickHeight());
             }
+        }
+
+        g.drawString("Score: " + engine.getScore(), 10, 20);
+
+        if (engine.isGameOver()){
+            g.drawString("GAME OVER", 350, 300);
+            g.drawString("Press ENTER to Restart", 300, 330);
         }
     }
 }
