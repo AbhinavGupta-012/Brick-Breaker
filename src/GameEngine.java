@@ -13,6 +13,25 @@ public class GameEngine{
     private int panelWidth = 800;
     private int panelHeight = 600;
 
+    private int rows = 3;
+    private int cols = 7;
+    private int brickWidth = 80;
+    private int brickHeight = 25;
+    private int brickGap = 10;
+    private boolean[][] bricks;
+
+    private int score = 0;
+
+    public GameEngine(){
+        bricks = new boolean[rows][cols];
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                bricks[i][j] = true;
+            }
+        }
+    }
+
     public void updateGame(){
         ballX += ballDX;
         ballY += ballDY;
@@ -32,6 +51,29 @@ public class GameEngine{
             double hitRatio = (double) hitPosition / paddleWidth;
 
             ballDX = (int) (8 * (hitRatio - 0.5));
+            ballY = paddleY - ballSize;
+        }
+
+        int totalWidth = cols * brickWidth + (cols - 1) * brickGap;
+        int startX = (panelWidth - totalWidth) / 2;
+
+        for (int row = 0; row < rows; row++){
+            for (int col = 0; col < cols; col++){
+                if (!bricks[row][col]){
+                    continue;
+                }
+
+                int brickX = startX + col * (brickWidth + brickGap);
+                int brickY = 50 + row * (brickHeight + brickGap);
+
+                if (ballX < brickX + brickWidth && ballX + ballSize > brickX && ballY < brickY + brickHeight && ballY + ballSize > brickY){
+                    bricks[row][col] = false;
+                    score += 10;
+
+                    ballDY = -ballDY;
+                    return;
+                }
+            }
         }
     }
 
@@ -73,5 +115,33 @@ public class GameEngine{
     
     public int getPaddleHeight(){
         return paddleHeight;
+    }
+
+    public boolean[][] getBricks(){
+        return bricks;
+    }
+
+    public int getRows(){
+        return rows;
+    }
+
+    public int getCols(){
+        return cols;
+    }
+
+    public int getBrickWidth(){
+        return brickWidth;
+    }
+
+    public int getBrickHeight(){
+        return brickHeight;
+    }
+
+    public int getBrickGap(){
+        return brickGap;
+    }
+
+    public int getScore(){
+        return score;
     }
 }
