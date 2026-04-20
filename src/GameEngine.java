@@ -22,6 +22,8 @@ public class GameEngine{
 
     private int score = 0;
 
+    private boolean gameOver = false;
+
     public GameEngine(){
         bricks = new boolean[rows][cols];
 
@@ -75,6 +77,10 @@ public class GameEngine{
                 }
             }
         }
+
+        if (ballY > panelHeight){
+            gameOver = true;
+        }
     }
 
     public void movePaddleLeft(){
@@ -87,6 +93,24 @@ public class GameEngine{
         if (paddleX < panelWidth - paddleWidth){
             paddleX += 10;
         }
+    }
+
+    public void resetGame(){
+        ballX = 380;
+        ballY = 300;
+        ballDX = 4;
+        ballDY = -4;
+
+        paddleX = 350;
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < cols; j++){
+                bricks[i][j] = true;
+            }
+        }
+
+        score = 0;
+        gameOver = false;
     }
 
     public int getBallX(){
@@ -143,5 +167,9 @@ public class GameEngine{
 
     public int getScore(){
         return score;
+    }
+
+    public boolean isGameOver(){
+        return gameOver;
     }
 }
